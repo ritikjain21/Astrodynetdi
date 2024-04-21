@@ -18,23 +18,100 @@ from wagtail.contrib.forms.panels import FormSubmissionsPanel
 
 
 class HomePage(Page):
-    # banner_image =
-    # banner_title = models.CharField(max_length=250)
-    # banner_description =
-    # about_image =
-    # about_title =
-    # about_description =
-    # solution_title =
-    # solution_description =
-    # left_demand_title =
-    # left_demand_description =
-    # left_demand_image =
-    # right_demand_title =
-    # right_demand_description =
-    # right_demand_image =
-    # application_title =
-    # application_description =
-    pass
+    banner_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Homepage image",
+    )
+    banner_title = models.CharField(
+            blank=True,
+            max_length=255, help_text="Write an Banner title for the site"
+        )
+    banner_description = RichTextField(blank=True)
+
+    about_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Homepage image",
+    )
+    about_title = models.CharField(
+        blank=True,
+        max_length=255, help_text="Write an about title for the site"
+    )
+    about_description = RichTextField(blank=True)
+    solution_title = models.CharField(
+        blank=True,
+        max_length=255, help_text="Write an solution title for the site"
+    )
+    solution_description = RichTextField(blank=True)
+
+    left_demand_title = models.CharField(
+        blank=True,
+        max_length=255, help_text="Write an left demand title for the site"
+    )
+    left_demand_description = RichTextField(blank=True)
+    left_demand_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Homepage image",
+    )
+    right_demand_title = models.CharField(
+        blank=True,
+        max_length=255, help_text="Write an right demand for the site"
+    )
+    right_demand_description = RichTextField(blank=True)
+    right_demand_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Homepage image",
+    )
+    application_title = models.CharField(
+        blank=True,
+        max_length=255, help_text="Write an application title for the site"
+    )
+    application_description = RichTextField(blank=True)
+
+    content_panels = Page.content_panels + [
+        MultiFieldPanel([
+            FieldPanel("banner_image"),
+            FieldPanel("banner_title"),
+            FieldPanel("banner_description"),
+        ], heading="Banner Area", classname="collapsible"),
+        MultiFieldPanel([
+            FieldPanel("about_image"),
+            FieldPanel("about_title"),
+            FieldPanel("about_description"),
+            FieldPanel("solution_title"),
+            FieldPanel("solution_description"),
+        ], heading="About Page Area", classname="collapsible"),
+        MultiFieldPanel([
+            FieldPanel("left_demand_title"),
+            FieldPanel("left_demand_description"),
+            FieldPanel('left_demand_image'),
+        ], heading="service Page Section", classname="collapsible"),
+        MultiFieldPanel([
+            FieldPanel("right_demand_title"),
+            FieldPanel("right_demand_description"),
+            FieldPanel('right_demand_image'),
+        ], heading="Right Demand Section", classname="collapsible"),
+
+        MultiFieldPanel([
+            FieldPanel('application_title'),
+            FieldPanel('application_description')
+        ], heading="Benefit section", classname="collapsible"),
+    ]
 
 
 class FormField(AbstractFormField):
