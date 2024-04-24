@@ -9,7 +9,7 @@
                 <p class="fs_12">Simplify your experience with a team that can support your versatile power and EMI Filter requirements.</p>
             </div>
             <div class="col-md col-xl-2 content-inverse">
-             <p><a href="/contact-us" class="btn btn-red" rel=" noopener">Contact us </a></p>
+             <p><a href="/contact-us/" class="btn btn-red" rel=" noopener">Contact us </a></p>
             </div>
           </div>
         </div>
@@ -26,19 +26,17 @@
                 <div class="col-lg-3 col-md-6">
                     <h6 class="text-white mb-3 text-left">PRODUCTS</h6>
                     <ul style="list-style:none; padding-left:0rem;">
-                        <li class="text-left mb-1 footer_text_color" style="padding-left:0rem;"><a href="#">Power Supplies</a></li>
-                        <li class="text-left mb-1 footer_text_color" style="padding-left:0rem;"><a href="#">EMI/EMC Filters</a></li>
-                        <li class="text-left mb-1 footer_text_color" style="padding-left:0rem;"><a href="#">Coolant Types</a></li>
-                        <li class="text-left mb-1 footer_text_color" style="padding-left:0rem;"><a href="#">Uninterrupted Power Supplies</a></li>
-                        <li class="text-left mb-1 footer_text_color" style="padding-left:0rem;"><a href="#">Power Distribution Units</a></li>
+                        {% for product in dropdown_product %}
+                        <li class="text-left mb-1 footer_text_color" style="padding-left:0rem;"><a href="/product/{{product.slug}}/">{{product.title}}</a></li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h6 class="text-white mb-3 text-left">APPLICANTS</h6>
                     <ul style="list-style:none; padding-left:0rem;">
-                        <li class="text-left mb-1 footer_text_color" style="padding-left:0rem;"><a href="#">Medical</a></li>
-                        <li class="text-left mb-1 footer_text_color" style="padding-left:0rem;"><a href="#">Industries</a></li>
-                        <li class="text-left mb-1 footer_text_color" style="padding-left:0rem;"><a href="#">Power Distribution Units</a></li>
+                        {% for application in dropdown_application %}
+                        <li class="text-left mb-1 footer_text_color" style="padding-left:0rem;"><a href="/application/{{application.slug}}">{{application.title}}</a></li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -59,12 +57,12 @@
     <!-- Copyright Start -->
     <div class="container-fluid copyright bg-image py-4">
         <div class="container text-center">
-            <p class="mb-2">Copyright &copy; <a class="fw-semi-bold" href="#">Your Site Name</a>, All Right Reserved.</p>
+            <p class="mb-2">Copyright &copy; <a class="fw-semi-bold" href="/">Astrodynetdi</a>, All Right Reserved.</p>
         </div>
     </div>
     <!-- Copyright End -->
 
 
     <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+    <a href="#" class="btn btn-lg btn-red btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 

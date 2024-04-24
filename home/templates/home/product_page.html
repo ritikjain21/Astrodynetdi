@@ -2,8 +2,56 @@
 {% load static %}
 {% load wagtailcore_tags wagtailimages_tags %}
 {% block content %}
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <h1 class="text-center text-white animated slideInRight">{{page.title}}</h1>
 
+        </div>
+    </div>
+    <!-- Page Header End -->
 
-<!--Write your code here-->
+<div class="container-xxl py-5">
+    <div class="container" style="max-width:1140px">
+        <div class="row g-4">
+            {% for product in products %}
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                <a href="/product/{{product.slug}}/">
+                <div class="team-item">
+                    <div class="box">
+                        <img src="{{product.outer_icon.url}}" alt="Icon" height="70%" width="70%" class="icon" style="color:blue;">
+                        <h2 class="heading">{{product.outer_title}}</h2>
+                        <p class="description">{{product.outer_description|richtext}}</p>
+                        <strong class="description">Find a solution <i class="bi bi-arrow-right"></i></strong>
+                        {% image product.outer_image original as img %}
+                        <img class="img-fluid" src="{{img.url}}" alt="">
+                    </div>
+                </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
 
+{% if products.paginator.num_pages > 1 %}
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+      {% if products.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ products.previous_page_number }}" tabindex="-1" aria-disabled="true">Previous</a>
+    </li>
+      {% endif %}
+      {% for page_num in products.paginator.page_range %}
+    <li class="page-item"><a class="page-link {% if page_num == products.number %} current{% endif %}" href="?page={{ page_num }}">{{ page_num }}</a></li>
+      {% endfor %}
+      {% if products.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ products.next_page_number }}">Next</a>
+    </li>
+      {% endif %}
+  </ul>
+</nav>
+
+{% endif %}
+    </div>
+</div>
 {% endblock %}

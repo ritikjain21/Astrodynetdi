@@ -14,19 +14,24 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="/" class="nav-item nav-link active">Home</a>
+                <a href="/" class="nav-item nav-link {% if request.path == '/' %}active {% endif %}">Home</a>
                  <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Projects</a>
+                    <a href="/product/" class="nav-link dropdown-toggle {% if request.path == '/product/' %}active {% endif %}">Product</a>
                     <div class="dropdown-menu bg-light m-0">
-                        <a href="project.html" class="dropdown-item">Projects</a>
-                        <a href="feature.html" class="dropdown-item">Features</a>
-                        <a href="team.html" class="dropdown-item">Our Team</a>
-                        <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                        <a href="404.html" class="dropdown-item">404 Page</a>
+                        {% for product in dropdown_product %}
+                        <a href="/product/{{product.slug}}/" class="dropdown-item">{{product.title}}</a>
+                        {% endfor %}
                     </div>
                 </div>
-                <a href="about.html" class="nav-item nav-link">Applications</a>
-                <a href="/contact-us/" class="nav-item nav-link">Contact</a>
+                 <div class="nav-item dropdown">
+                    <a href="/application/" class="nav-link dropdown-toggle {% if request.path == '/application/' %}active {% endif %}">Applications</a>
+                    <div class="dropdown-menu bg-light m-0">
+                        {% for application in dropdown_application %}
+                        <a href="/application/{{application.slug}}/" class="dropdown-item">{{application.title}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <a href="/contact-us/" class="nav-item nav-link {% if request.path == '/contact-us/' %}active {% endif %}">Contact</a>
             </div>
             <a href="/contact-us/" class="btn px-3 d-none d-lg-block" style="background-color:var(--primary); color:white;">Request A Quote</a>
         </div>
