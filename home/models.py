@@ -1,4 +1,6 @@
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import models
+from wagtail.documents import get_document_model
 from wagtail.models import Page, Orderable
 from modelcluster.fields import ParentalKey
 # import FieldRowPanel and InlinePanel:
@@ -113,6 +115,14 @@ class HomePage(Page):
         ], heading="Benefit section", classname="collapsible"),
     ]
 
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context['products'] = ProductDetailPage.objects.live().public().order_by('-id')[:6]
+        context['dropdown_product'] = ProductDetailPage.objects.live().public().order_by('-id')
+        context['dropdown_application'] = ApplicationDetailPage.objects.live().public().order_by('-id')
+        context['applications'] = ApplicationDetailPage.objects.live().public().order_by('-id')[:4]
+        return context
+
 
 class FormField(AbstractFormField):
     page = ParentalKey('ContactPage', on_delete=models.CASCADE, related_name='form_fields')
@@ -150,18 +160,178 @@ class ContactPage(AbstractEmailForm):
         ], "Email"),
     ]
 
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context['dropdown_product'] = ProductDetailPage.objects.live().public().order_by('-id')
+        context['dropdown_application'] = ApplicationDetailPage.objects.live().public().order_by('-id')
+        return context
+
 
 class ProductPage(Page):
     pass
 
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        product_details = ProductDetailPage.objects.live().public()
+        paginator = Paginator(product_details, 1)
+        page = request.GET.get('page')
+        try:
+            product_details = paginator.page(page)
+        except PageNotAnInteger:
+            product_details = paginator.page(1)
+        except EmptyPage:
+            product_details = paginator.page(paginator.num_pages)
+        context['products'] = product_details
+        context['dropdown_product'] = ProductDetailPage.objects.live().public().order_by('-id')
+        context['dropdown_application'] = ApplicationDetailPage.objects.live().public().order_by('-id')
+        return context
+
+
+class MultipleProduct(Orderable):
+    page = ParentalKey('ProductDetailPage', on_delete=models.CASCADE, related_name='products')
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Products image",
+    )
+    part_number = models.CharField(max_length=250)
+    description = RichTextField()
+    output_voltage = models.CharField(max_length=250)
+    output_current = models.CharField(max_length=250)
+    output_power = models.CharField(max_length=250)
+    input_voltage_range = models.CharField(max_length=250)
+    isolation = models.CharField(max_length=250)
+    form_factor = models.CharField(max_length=250)
+    document = models.ForeignKey(
+        get_document_model(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
+    panels = [
+        FieldPanel('image'),
+        FieldPanel('part_number'),
+        FieldPanel('description'),
+        FieldPanel('output_voltage'),
+        FieldPanel('output_current'),
+        FieldPanel('output_power'),
+        FieldPanel('input_voltage_range'),
+        FieldPanel('isolation'),
+        FieldPanel('form_factor'),
+        FieldPanel('document'),
+    ]
+
 
 class ProductDetailPage(Page):
-    pass
+    outer_title = models.CharField(max_length=250, default='')
+    outer_description = models.CharField(max_length=250, default='')
+    outer_icon = models.ForeignKey(
+        get_document_model(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
+    outer_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Homepage image",
+    )
+    description = RichTextField(null=True, blank=True)
+    content_panels = Page.content_panels + [
+        MultiFieldPanel([
+            FieldPanel('outer_title'),
+            FieldPanel('outer_description'),
+            FieldPanel('outer_icon'),
+            FieldPanel('outer_image'),
+        ], heading="Product Listing", classname="collapsible"),
+        FieldPanel('description'),
+        MultiFieldPanel([
+            InlinePanel('products', label="Products", min_num=1)
+        ], heading="Products section", classname="collapsible"),
+    ]
 
 
-class ApplicantPage(Page):
-    pass
+class ApplicationPage(Page):
+    description = RichTextField(null=True, blank=True)
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+    ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context['dropdown_product'] = ProductDetailPage.objects.live().public().order_by('-id')
+        context['dropdown_application'] = ApplicationDetailPage.objects.live().public().order_by('-id')
+        return context
 
 
-class ApplicantDetailPage(Page):
-    pass
+class ApplicationDetailPage(Page):
+    outer_title = models.CharField(max_length=250, default='')
+    outer_description = models.CharField(max_length=250, default='')
+    outer_icon = models.ForeignKey(
+        get_document_model(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
+    outer_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Homepage image",
+    )
+    header_description = RichTextField(null=True, blank=True)
+    right_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Homepage image",
+    )
+    right_description = RichTextField(null=True, blank=True)
+    middle_description = RichTextField(null=True, blank=True)
+    left_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Homepage image",
+    )
+    left_description = RichTextField(null=True, blank=True)
+    content_panels = Page.content_panels + [
+        MultiFieldPanel([
+            FieldPanel('outer_title'),
+            FieldPanel('outer_description'),
+            FieldPanel('outer_icon'),
+            FieldPanel('outer_image'),
+        ], heading="Application Listing", classname="collapsible"),
+        MultiFieldPanel([
+            FieldPanel('header_description')
+        ], heading="Header", classname="collapsible"),
+        MultiFieldPanel([
+            FieldPanel('right_image'),
+            FieldPanel('right_description')
+        ], heading="Banner bottom", classname="collapsible"),
+        MultiFieldPanel([
+            FieldPanel('middle_description')
+        ], heading="Middle Section", classname="collapsible"),
+        MultiFieldPanel([
+            FieldPanel('right_image'),
+            FieldPanel('right_description')
+        ], heading="End Section", classname="collapsible"),
+    ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context['dropdown_product'] = ProductDetailPage.objects.live().public().order_by('-id')
+        context['dropdown_application'] = ApplicationDetailPage.objects.live().public().order_by('-id')
+        return context

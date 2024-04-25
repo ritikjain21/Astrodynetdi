@@ -5,4 +5,72 @@
 
 <!--Write your code here-->
 
+<div class="container mt-5  ">
+    <div class="pb-4">
+        <h1>{{page.title}}</h1>
+    </div>
+    <div class="table-responsive-lg">
+    <table class="table caption-top">
+<!--          <caption class="">Items 1-10 of 372</caption>-->
+        <thead class="" style="font-size:12px;">
+            <tr >
+                    <th> </th>
+                    <th>PART NUMBER</th>
+                    <th>DESCRIPTION</th>
+                    <th>OUTPUT VOLTAGES</th>
+                    <th>OUTPUT CURRENT (A)</th>
+                    <th>OUTPUT POWER (W)</th>
+                    <th>INPUT VOLTAGE RANGE</th>
+                    <th>ISOLATION (INPUT-OUTPUT)</th>
+                    <th>FORM FACTOR</th>
+                    <th> </th>
+            </tr>
+        </thead>
+        <tbody class="text-ig-start">
+        {% for product in products %}
+            <tr style="font-size:13px;">
+                {% image product.image original as img %}
+                <td><img src="{{img.url}}" height="90" width="200"></td>
+                <td>{{product.part_number}}</td>
+                <td>{{product.description|richtext}}</td>
+                <td>{{product.output_voltage}}</td>
+                <td>{{product.output_current}}</td>
+                <td>{{product.output_power}}</td>
+                <td>{{product.input_voltage_range}}</td>
+                <td>{{product.isolation}}</td>
+                <td>{{product.form_factor}}</td>
+                <td>
+                    <div class="d-grid gap-2 col-12 mx-auto ">
+                    <a href="/contact-us/" class="btn btn-red input-group-text" type="button">Request a Quote</a>
+                    <a href="{{product.document.url}}" target="_blank" class="btn btn-red" type="button">Datasheet</a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    </div>
+{% if products.paginator.num_pages > 1 %}
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+      {% if products.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ products.previous_page_number }}" tabindex="-1" aria-disabled="true">Previous</a>
+    </li>
+      {% endif %}
+      {% for page_num in products.paginator.page_range %}
+    <li class="page-item"><a class="page-link {% if page_num == products.number %} current{% endif %}" href="?page={{ page_num }}">{{ page_num }}</a></li>
+      {% endfor %}
+      {% if products.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ products.next_page_number }}">Next</a>
+    </li>
+      {% endif %}
+  </ul>
+</nav>
+
+{% endif %}
+
+
 {% endblock %}
