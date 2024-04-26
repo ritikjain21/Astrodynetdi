@@ -32,7 +32,7 @@
 
     <!-- About Start -->
  <div class="container-fluid py-5" style="background-color:#e7ecf1;">
-    <div class="row g-5 pt-5">
+    <div class="row g-5 pt-5" style="--bs-gutter-x:none !important;">
         <div class="col-lg-4 d-flex justify-content-center">
             <div class="col-md-6 align-self-start wow fadeInUp" data-wow-delay="0.1s">
                 {% image self.about_image original as img %}
@@ -54,7 +54,7 @@
         <div class="row g-4">
             {% for product in products %}
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                <a href="#">
+                <a href="/product/{{product.slug}}">
                 <div class="team-item">
                     <div class="box">
                         <img src="{{product.outer_icon.url}}" alt="Icon" height="70%" width="70%" class="icon" style="color:blue;"> <!-- Your icon here -->
@@ -145,7 +145,7 @@
 
 
     <!-- Service Start -->
-    <div class="container-xxl custom_height">
+    <div class="container-xxl custom_height mob_view">
         <div class="container">
             <div class="text-center mx-auto pb-4 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
                 <h1 class="fw-medium mb-2">{{page.application_title}}</h1>

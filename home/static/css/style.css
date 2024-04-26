@@ -220,6 +220,8 @@ h6,
         position: relative;
         min-height: 450px;
     }
+
+
     
     #header-carousel .carousel-item img {
         position: absolute;
@@ -230,7 +232,7 @@ h6,
 }
 
 .page-header {
-    background: url(https://www.astrodynetdi.com/hubfs/AST_Theme_Files_2020/images/ast-inner-aspot-bg.jpg) center center no-repeat;
+    background: url(/static/img/banner.webp) center center no-repeat;
     background-size: cover;
 }
 
@@ -872,3 +874,27 @@ border: 1px solid #6b7c93;
 .fs_13{
 font-size:13px;
 }
+@media (max-width: 768px) {
+    .m_t{
+        padding-top: 50px !important;
+        padding-bottom: 0px !important;
+    }    .m_b {
+        padding-bottom: 0px !important;
+    }
+    .custom_height{
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+    }
+    .mob_view{
+        padding-top: 50px !important;
+    }
+    .foot_mob_view{
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+    }
+    .second_foot_view{
+        padding-top: 0px !important;
+        margin-top: 0px !important;
+    }
+    }
+    }
