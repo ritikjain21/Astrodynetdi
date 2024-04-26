@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load wagtailcore_tags wagtailimages_tags %}
+{% block content %}
+
+
+<!--Write your code here-->
+<main class="body-container-wrapper">
+
+
+<!--<div class="aspot bg-cover" style="background-image: url('/static/img/banner.webp');">-->
+<!--  <div class="content-container">-->
+<!--    <div class="container">-->
+<!--      <div class="row justify-content-center">-->
+<!--        <div class="col-lg-10 col-xl-6 content-inverse text-center">-->
+<!--          <h1 class="text-white">{{page.title}}</h1>-->
+<!--            <p class="text-white fs_13">{{page.header_description|richtext}}</p>-->
+<!--&lt;!&ndash;            <p class="text-white"><button type="button" class="btn btn-red" data-toggle="modal" data-target="#modal">Download Guide</button></p>&ndash;&gt;-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5 text-center">
+            <h1 class="text-center text-white animated slideInRight">{{page.title}}</h1>
+            {{page.header_description|richtext}}
+        </div>
+    </div>
+<div class="content-container">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md">
+        {{page.right_description|safe}}
+      </div>
+      <div class="col-md">
+        {% image page.right_image original as img %}
+       <img src="{{img.url}}">
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if page.middle_description %}
+<div class="content-container-lg">
+    <div class="container">
+        <div class="row">
+          <div class="col-md">
+              {{page.middle_description|richtext}}
+          </div>
+        </div>
+      </div>
+</div>
+    {% endif %}
+
+
+<div class="content-container">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md">
+            {% image page.left_image original as img %}
+       <img src="{{img.url}}">
+      </div>
+      <div class="col-md">
+         {{page.left_description|richtext}}
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+{% endblock %}

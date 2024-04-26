@@ -266,6 +266,7 @@ class ApplicationPage(Page):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
         context['dropdown_product'] = ProductDetailPage.objects.live().public().order_by('-id')
+        context['applications'] = ApplicationDetailPage.objects.live().public().order_by('-id')
         context['dropdown_application'] = ApplicationDetailPage.objects.live().public().order_by('-id')
         return context
 
@@ -325,8 +326,8 @@ class ApplicationDetailPage(Page):
             FieldPanel('middle_description')
         ], heading="Middle Section", classname="collapsible"),
         MultiFieldPanel([
-            FieldPanel('right_image'),
-            FieldPanel('right_description')
+            FieldPanel('left_image'),
+            FieldPanel('left_description')
         ], heading="End Section", classname="collapsible"),
     ]
 
